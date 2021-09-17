@@ -100,12 +100,13 @@ function alert_function(message){
 }
 
 function upload() {
-    if (Array.isArray(arrBlob) && arrBlob.length && arrBlob.length == sen_id.length) {
+    if (Array.isArray(arrBlob) && arrBlob.length && arrBlob.length >0) {
         let xhr = new XMLHttpRequest();
         var fd = new FormData();
         // fd.append("audio_data", arrBlob[0], fileNames[0]);
         for (let j=0;j<sen_id.length;j++){
-            fd.append("audio_data", arrBlob[j], fileNames[j]);
+            if (arrBlob[j]!=undefined)
+                fd.append("audio_data", arrBlob[j], fileNames[j]);
             // alert(fileNames[j]);
             // console.log(fileNames[j]);
         }

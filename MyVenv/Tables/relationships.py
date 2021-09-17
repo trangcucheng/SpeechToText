@@ -81,13 +81,15 @@ c= conn.cursor()
 # print(last_item)
 # c.execute("delete from relationships where id >=0")
 # c.execute("drop table relationships")
-id =2
-c.execute("select count(save_dir_url) from relationships where user_id ={0}".format(id))
-print(c.fetchone()[0])
+
 # for item in c.fetchall():
 #     print(item[0])
-
-# c.execute("select * from relationships")
-# print(c.fetchall())
+import re
+id =2
+c.execute("select save_dir_url from relationships where user_id = {0}".format(id))
+for item in c.fetchall():
+            item_temp = ".".join(item[0].split(".")[:-1])
+            sen_id = int(item_temp.split("_")[-1])
+            print(sen_id)
 conn.commit()
 conn.close()

@@ -47,7 +47,7 @@
         <h4>Thống kê thu âm</h4>
         <button id="by-users">Thống kê theo người dùng</button>
         <button id="by-sentences">Thống kê theo câu</button>
-        <a href="{{ url_for('export_lst_sentence') }}">
+        <a href="">
             <button>Xuất file lst</button>
         </a>
         <a href="{{url_for('logout')}}" >Đăng xuất </a>
@@ -97,7 +97,7 @@
                     <td>{{sentence[0]}}</td>
                     <td>{{sentence[1]}}</td>
                     <td>{{sentence[2]}}</td>
-                    <td><a href="">Nghe thử</a></td>
+                    <td><a href="{{url_for('nghethu_each_sen', id = sentence[0])}}">Nghe thử</a></td>
                 </tr>
                 {%endfor%}
             </tbody>

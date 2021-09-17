@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nghe thử - Câu {{sen_id}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"></script>
+  
+    <script>
+        $(document).ready(function () {
+            $('#myTable').dataTable({}); // dòng này để nhúng bảng biểu thành dạng bảng được phân trang
+        });
+
+    </script>
+</head>
+<body>
+
+<div class="container mt-3">
+    <div class="user-info">
+        <h4>Xin chào Admin: {{fullname}}</h4>
+        <h6>ID: {{id}}</h6>
+        <h4>Thống kê thu âm câu: {{sen_id}} </h4>
+        <h5>Nội dung: {{sen_content}}</h5>
+        <h5>Số files đã ghi âm được: {{num_files}}</h5>
+        <h5>Tổng thời gian: {{duration}} giờ</h5>
+        <a href="{{ url_for('export_lst_sen', id = id) }}">
+            <button>Xuất file lst</button>
+        </a>
+    </div>
+    <!--    <p>Nhập vào từ khóa tìm kiếm:</p>-->
+    <!--    <input class="form-control" id="myInput" type="text"-->
+    <!--           placeholder="Tìm kiếm..">-->
+    <br>
+    <table class="table table-bordered" id="myTable">
+        <thead>
+        <tr>
+            <th>User_id</th>
+            <th>Username</th>
+            <th>Fullname</th>
+            <th>Audio</th>
+        </tr>
+        </thead>
+        <tbody id="myBody">
+        {% for item in users_arr %}
+        <tr>
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+            <td>{{item[2]}}</td>
+            <td>
+                <audio controls>
+                    <source src="/{{item[3]}}" type="audio/wav">
+                </audio>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+    <a href="{{url_for('logout')}}" >Đăng xuất </a>
+</div>
+
+</body>
+</html>
+

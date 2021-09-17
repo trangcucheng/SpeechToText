@@ -17,7 +17,9 @@ def get_each_info(user_id):
             # lấy files_path: đường dẫn tới từng file ghi âm của người này
             c.execute("select save_dir_url from relationships where user_id = {0}".format(user_id))
             for item in (c.fetchall()):
+                
                 files_path.append(os.path.join("static/audios", item[0]))
+                print(item[0])
 
             #  lấy dur_each_sen: thời gian của từng file ghi âm
             dur_item = 0
@@ -30,6 +32,6 @@ def get_each_info(user_id):
     return dur_item, files_path, sens_id_arr
 
 if __name__ == '__main__':
-    get_each_info()
+    get_each_info(id)
         
     

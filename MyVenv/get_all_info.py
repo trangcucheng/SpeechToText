@@ -1,11 +1,14 @@
 import os
 import librosa
 import sqlite3
-from flask import request
+from flask import request, session
 
 
 def get_all_info():
-    conn =  sqlite3.connect('transcripts.db')
+    id = session['id']
+    with sqlite3.connect('transcripts.db') as conn:
+        c = conn.cursor()
+        
     c = conn.cursor()
 
     names, duration_each_user, number_files, files_path_each_user, ids_each_user = [], [], [], [], []

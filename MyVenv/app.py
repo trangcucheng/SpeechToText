@@ -3,7 +3,7 @@ from sqlite3.dbapi2 import SQLITE_UPDATE, connect
 from flask import Flask, render_template, flash, request, redirect,send_file, url_for, session
 import sqlite3
 import re
-import os
+import time
 from flask.helpers import total_seconds
 import librosa
 from werkzeug.utils import secure_filename
@@ -147,7 +147,6 @@ def record():
                     c.execute("update transcripts set save_folder ='{0}' where sen_id={1} ".format(folder_name,i))
                 except:
                     conn.rollback()
-                    print("can not add folder_name to transcripts")
             folder_upload = os.path.join(str(app.config['UPLOAD_FOLDER']),folder_name)
             if not os.path.exists(folder_upload):
                 os.mkdir(folder_upload)
@@ -157,15 +156,6 @@ def record():
         c.execute("select * from transcripts where sen_id >= {0} and sen_id <={1}".format(cur_id, cur_id_next))
         sens_arr = c.fetchall()
         sens_arr_number = len(sens_arr)
-        # cur_id_next= cur_id_next+1
-        # try:
-        #     c.execute("update users set cur_id = {0} where id = {1}".format(cur_id_next,id))
-        #     c.execute("select * from transcripts ")
-        #     all_sens_num = len(c.fetchall())  # tổng số các câu trong db
-        # except:
-        #     conn.rollback()
-        # finally:
-        #     conn.commit()
         skip_sens_str_arr =re.split(",",user[6])   # string chứa id của những câu bị bỏ qua, lưu dưới dạng chuỗi, mỗi id cách nhau bởi dấu phẩy
         skip_sens_str_arr.pop()
         skip_sens_arr=[]
@@ -230,16 +220,51 @@ def nghethu_each(id):
     print(sens_id_arr)
     for i in sens_id_arr:
         transcripts.append(dict_sentences[i][1])
-
-    # for dict_sentence in dict_sentences:
-    #     if dict_sentence[0] == int(sens_id_arr[i]):
-    #         transcripts.append(dict_sentence[1])
-    #         print(dict_sentence[1])
-    #         i = i + 1
-    #         if i == len(sens_id_arr):
-    #             break
     return render_template("nghethu_each.html", id = id,fullname = fullname, complete_sens = len(sens_id_arr), total_duration = total_duration, sens_id_arr = sens_id_arr, transcripts = transcripts, files_path = files_path )
 
+
+@app.route("/nghethu_each_sen/<int:id>")
+def nghethu_each_sen(id): # id là id của câu
+    # tạo ra path tới folder lưu câu này
+    admin_id = session['id']
+    with sqlite3.connect("transcripts.db") as conn:
+        c = conn.cursor()
+        c.execute("select save_folder from transcripts where sen_id = {0}".format(id))
+        save_folder = c.fetchone()[0]
+        c.execute("select fullname from users where id = {0}".format(admin_id))
+        admin_fullname = c.fetchone()[0]
+        conn.commit()
+    path = os.path.join(str(app.config['UPLOAD_FOLDER']), save_folder)
+    files_arr = os.listdir(path)
+    users_arr = []
+    duration = 0
+    print(files_arr)
+    for file in files_arr:
+        #lấy id của người dùng
+        user=[]
+        temp = re.split("_",file)  #['namcute', '11', '3.wav']
+        user_id = int(temp[1])
+        user.append(user_id) # lấy id của người dùng
+        user.append(temp[0]) # lấy username
+        with sqlite3.connect("transcripts.db") as conn:
+            c = conn.cursor()
+            # lấy fullname của user
+            c.execute("select fullname from users where id = {0}".format(user_id))
+            fullname = c.fetchone()[0]
+            # lấy nội dung của câu
+            c.execute("select sen_content from transcripts where sen_id = {0}".format(user_id))
+            sen_content = c.fetchone()[0]
+            conn.commit()
+        user.append(fullname)
+        files_path_temp=os.path.join("static/audios",save_folder)
+
+        file_path = os.path.join(str(files_path_temp),file)
+        duration = duration + librosa.get_duration(filename = file_path)
+        user.append(file_path)
+        print(user)
+        users_arr.append(user)
+    duration = float("{:.2f}".format(duration/3600))
+    return render_template('nghethu_each_sen.html', fullname = admin_fullname,users_arr=users_arr, id=admin_id,sen_id = id,sen_content = sen_content, num_files = len(users_arr), duration = duration  )
 @app.route("/skip_show/<int:id>")
 def skip_show(id):
     id = session['id']
@@ -271,8 +296,6 @@ def upload_skip():
     id = session['id']
     username = session['username']
     cur_id = session['cur_id']
-    print("cur_id in upload_Skip")
-    print(cur_id)
     with sqlite3.connect("transcripts.db") as conn:
         c = conn.cursor()
         c.execute("select fullname from users where id = {0}".format(id))
@@ -304,6 +327,7 @@ def upload_skip():
    
     left_sens = all_sens_num -skip_sens - complete_sens   # số câu còn lại phải thu
     return render_template('skip_show.html', username = username, id = id, fullname = fullname, sen_id = sen_id, complete_sens = complete_sens, skip_sens = skip_sens, left_sens= left_sens, skip_sens_content = skip_sens_content)
+
 @app.route("/thongke_admin")
 def thongke_admin():
     id = session['id']
@@ -351,36 +375,75 @@ def thongke_admin():
             # nếu tồn tại save_folder của câu này ( đã được lưu rồi)
             if item[2]: # sentence_01 - tên của folder lưu các file ghi âm của từng câu
                 folder_save = os.path.join(str(app.config['UPLOAD_FOLDER']),item[2])
-                files_arr=os.listdir(folder_save) # mảng lưu tên file của các files ghi âm từng câu ['namcute_11_55.wav', 'namcute_2_55.wav']
-                # nếu câu này có người thu rồi
-                if len(files_arr):
-                    sentence=[] 
-                    sentence.append(item[0]) #id của câu
-                    sentence.append(item[1]) # nội dung của câu
-                    sentence.append(len(files_arr)) # số người dùng đã thu
-                    sentences_info.append(sentence)
+                if os.path.exists(folder_save):
+                    files_arr=os.listdir(folder_save) # mảng lưu tên file của các files ghi âm từng câu ['namcute_11_55.wav', 'namcute_2_55.wav']
+                    # nếu câu này có người thu rồi
+                    if len(files_arr):
+                        sentence=[] 
+                        sentence.append(item[0]) #id của câu
+                        sentence.append(item[1]) # nội dung của câu
+                        sentence.append(len(files_arr)) # số người dùng đã thu
+                        sentences_info.append(sentence)
     return render_template("thongke_admin.html", id = id, fullname = fullname, users_info = users_info, sentences_info = sentences_info)
-@app.route("/export_lst_user")
-def export_lst_user():
-    global files_path, sens_id_arr
+@app.route("/export_lst_user/<int:id>")
+def export_lst_user(id):
+    if not id:
+        id = session['id']
+    with sqlite3.connect("transcripts.db") as conn:
+        c = conn.cursor()
+        c.execute("select fullname from users where id = {0}".format(id))
+        fullname = c.fetchone()[0]
+    global dur_item, files_path, sens_id_arr            
+    dur_item, files_path, sens_id_arr = get_each_info(id)
+    upload_file = request.files.getlist('files_path')
+    total_duration = "{:.2f}".format(dur_item/3600)
     sens_id_arr, files_path = zip(*sorted(zip(sens_id_arr, files_path)))
-    transcripts = []
     global dict_sentences
-    for id in sens_id_arr:
-        transcripts.append(dict_sentences[id][1])
+    transcripts = []
     duration = []
+    print(sens_id_arr)
+    for i in sens_id_arr:
+        transcripts.append(dict_sentences[i][1])
     for file_path in files_path:
-        duration.append(round(librosa.duration(filename=file_path),2))
+        print(file_path)
+        duration.append(round(librosa.get_duration(filename=file_path),2))
     with open("static/collect_data_web.lst","w+",encoding="utf-8" ) as f_write:
         for i in range(0,len(sens_id_arr)):
             f_write.write("collect_data"+str(i)+"\t"+files_path[i]+"\t"+str(duration[i])+"\t"+transcripts[i])
     return send_file("static/collect_data_web.lst", as_attachment=True)
 
-@app.route("/export_lst_sentence")
-def export_lst_sentence():
+@app.route("/export_lst_sen/<int:id>")
+def export_lst_sen(id): # id là id của câu
+    with sqlite3.connect("transcripts.db") as conn:
+        c = conn.cursor()
+        c.execute("select save_folder from transcripts where sen_id = {0}".format(id))
+        save_folder = c.fetchone()[0]
+        conn.commit()
+    path = os.path.join(str(app.config['UPLOAD_FOLDER']), save_folder)
+    files_arr = os.listdir(path)
+    users_arr = [] # lấy user_name và user_id
+    duration = []
+    files_path=[] # mảng lưu đường dẫn tới các file của các câu
+    for file in files_arr:
+        #lấy id của người dùng
+        user=[]
+        temp = re.split("_",file)  #['namcute', '11', '3.wav']
+        user_id = int(temp[1])
+        user.append(user_id) # lấy id của người dùng
+        user.append(temp[0]) # lấy username
+        users_arr.append(user)
+        file_path = os.path.join(str(path),file)
+        files_path.append(file_path)
+        duration.append(round(librosa.get_duration(filename=file_path),2))
+    file_download = "static/collect_sen_"+str(id)+".lst"
+    with open(file_download,"w+",encoding="utf-8" ) as f_write:
+        f_write.write("stt\tuser_id\tusername\tduration\tpath_to_file:\n")
+        for i in range(0,len(files_arr)):
+            f_write.write(str(i)+"\t"+str(users_arr[i][0])+"\t"+users_arr[i][1]+"\t"+str(duration[i])+"\t"+files_path[i])
+    return send_file(file_download, as_attachment=True)
+   
     
-# @app.route("/thongke_admin")
-# def thongke_admin():
+
 @app.route("/skip")
 def skip():
     id = session['id']
@@ -431,17 +494,29 @@ def upload_continue():
             conn.commit()
         except:
             conn.rollback()
-        c.execute("select skip_sens from users where id ={0}".format(id))
-        skip_sens_str = c.fetchone()[0]
-        skip_sens_str_arr =re.split(",",skip_sens_str)   # string chứa id của những câu bị bỏ qua, lưu dưới dạng chuỗi, mỗi id cách nhau bởi dấu phẩy
-        skip_sens_str_arr.pop()  # xóa phần tử rỗng bị thừa ở cuối mảng ['1','2','']
+        skip_sens_str = ""
         skip_sens_arr=[]
-        for item in skip_sens_str_arr:
-            skip_sens_arr.append(int(item))
+        complete_sens_arr=[]  # mảng chứa các câu đã được thu rồi
+        c.execute("select save_dir_url from relationships where user_id = {0}".format(id))
+        for item in c.fetchall():
+            item_temp = ".".join(item[0].split(".")[:-1])
+            sen_id = int(item_temp.split("_")[-1])
+            complete_sens_arr.append(sen_id)
+        for i in range(0, cur_id+5):
+            if i not in complete_sens_arr:
+                skip_sens_arr.append(i)
+                skip_sens_str = skip_sens_str + str(i)+","
+        with sqlite3.connect("transcripts.db") as conn:
+            try:
+                c = conn.cursor()
+                c.execute("update users set skip_sens = '{0}'".format(skip_sens_str))
+                conn.commit()
+            except:
+                conn.rollback()
         skip_sens = len(skip_sens_arr)  # số câu đã bỏ qua
-        complete_sens = cur_id-skip_sens  # số câu đã thu 
+        complete_sens = len(complete_sens_arr)  # số câu đã thu 
 
-        left_sens = all_sens_num -cur_id 
+        left_sens = all_sens_num -complete_sens - skip_sens
     return redirect(url_for('record',left_sens = left_sens, complete_sens = complete_sens, skip_sens = skip_sens))
 
 @app.route("/logout")

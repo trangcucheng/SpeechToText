@@ -30,7 +30,7 @@
         <h4>Thống kê thu âm</h4>
         <h5>Số câu đã ghi âm được: {{complete_sens}}</h5>
         <h5>Tổng thời gian: {{total_duration}} giờ</h5>
-        <a href="{{ url_for('export_lst_user') }}">
+        <a href="{{ url_for('export_lst_user', id = id) }}">
             <button>Xuất file lst</button>
         </a>
     </div>
