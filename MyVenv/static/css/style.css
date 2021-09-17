@@ -1,0 +1,13 @@
+/* style for login */
+.form-control-lg{
+    width: 40%!important;
+}
+
+@font-face {
+    src: url('../css/fonts/font-family/NunitoSans-Regular.ttf');
+    font-family: "NunitoSans";
+}
+
+*{
+    font-family: "NunitoSans", sans-serif;
+}

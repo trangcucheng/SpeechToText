@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thống kê - Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"></script>
+  
+    <script>
+        $(document).ready(function () {
+            $('#myTable').dataTable({}); // dòng này để nhúng bảng biểu thành dạng bảng được phân trang
+        });
+
+    </script>
+    <style>
+        table, th, td{
+            border: 1px solid #000;
+        }
+        div.sentences-table,
+        div.users-table{
+            display: none;
+        }
+
+        div.sentences-table.show,
+        div.users-table.show{
+            display: block!important;
+        }
+
+        
+
+    </style>
+</head>
+<body>
+
+<div class="container mt-3">
+    <div class="admin-info">
+        <h4>Xin chào Admin: {{fullname}}</h4>
+        <h6>ID: {{id}}</h6>
+        <h4>Thống kê thu âm</h4>
+        <button id="by-users">Thống kê theo người dùng</button>
+        <button id="by-sentences">Thống kê theo câu</button>
+        <a href="{{ url_for('export_lst_sentence') }}">
+            <button>Xuất file lst</button>
+        </a>
+        <a href="{{url_for('logout')}}" >Đăng xuất </a>
+    </div>
+    <div class="users-table ">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Tên đầy đủ</th>
+                    <th>Số câu đã thu</th>
+                    <th>Số câu bỏ qua</th>
+                    <th>Số câu còn lại</th>
+                    <th>Nghe thử</th>
+                </tr>
+            </thead>
+            <tbody>
+                 {% for user in users_info %}
+                <tr>
+                    <td>{{user[0]}}</td>
+                    <td>{{user[1]}}</td>
+                    <td>{{user[2]}}</td>
+                    <td>{{user[3]}}</td>
+                    <td>{{user[4]}}</td>
+                    <td>{{user[5]}}</td>
+                    <td><a href="{{url_for('nghethu_each',id =user[0])}}">Nghe thử</a></td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="sentences-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nội dung</th>
+                    <th>Số files thu được</th>
+                    <th>Nghe thử</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sentence in sentences_info%}
+                <tr>
+                    <td>{{sentence[0]}}</td>
+                    <td>{{sentence[1]}}</td>
+                    <td>{{sentence[2]}}</td>
+                    <td><a href="">Nghe thử</a></td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        let userBtn = document.getElementById('by-users');
+        let senBtn = document.getElementById('by-sentences');
+        let userTable = document.querySelector('.users-table');
+        let sentenceTable = document.querySelector('.sentences-table');
+
+        function checkClass(element, name){
+            str = element.className;
+            if (str.includes(name)) return true;
+            else return false;
+        }
+
+        userBtn.onclick = function(){
+            if (!checkClass(userTable,'show')) {
+                userTable.classList.add('show');
+            }
+            if (checkClass(sentenceTable,'show')){
+                sentenceTable.classList.remove('show');
+            }
+        }
+
+        senBtn.onclick = function(){
+            if (!checkClass(sentenceTable,'show')) {
+                sentenceTable.classList.add('show');
+            }
+            if (checkClass(userTable,'show')){
+                userTable.classList.remove('show');
+            }
+        }
+        
+    </script>
+</div>
+
+</body>
+</html>
+

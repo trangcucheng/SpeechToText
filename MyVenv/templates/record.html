@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+{%block script%}
+<script type="text/javascript">
+    var sen_id = {{sen_id}};
+    var username = "{{username}}"
+    var user_id = {{id}}
+</script>
+{%endblock%}
+{% block style%}
+<style>
+    table, th, td{
+        border: 1px solid #000;
+    }
+</style>
+{%endblock%}
+{% block content%}
+
+    <div class="user-info">
+        <h4>Xin chào: {{fullname}}</h4>
+        <h6>ID: {{id}}</h6>
+        <h5>Số câu đã ghi âm được: {{complete_sens}}</h5>
+        <h5>Số câu đã bỏ qua: {{skip_sens}}</h5>
+        <a href="{{url_for('skip_show',id=id)}}">Bỏ qua</a>
+        <h5>Số câu còn phải thu: {{left_sens}}</h5>
+        <a href="{{url_for('nghethu_each', id = id)}}">Nghe thử</a>
+    </div>
+    <table style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th width="70%">Nội dung</th>
+            <th>Controls</th>
+            <th>File</th>
+        </tr>
+        
+        {% for i in range(0,sens_arr_number) %}
+        <tr>
+            <td id="colId_{{i}}" class="colId">{{sens_arr[i][0]}}</td>
+            <td id="colCau_{{i}}" class="content">
+                <label>{{sens_arr[i][1]}}</label>
+            </td>
+            <td id="colControls_{{i}}" class="controls">
+                <button id="recordButton_{{i}}" class="recordBtn">Ghi âm</button>
+                <button class="stop" id="stopButton_{{i}}" disabled>Dừng lại</button>
+            </td>
+            <td id="colWav_{{i}}">
+
+            </td>
+        </tr>
+        {%endfor%}
+
+    </table>
+    <div align="center">
+        <button id="upAudio" onclick="upload()">Tải lên và tiếp tục thu âm</button>
+        <button><a href="{{url_for('skip')}}" >Bỏ qua </a></button>
+        <button><a href="{{url_for('logout')}}" >Đăng xuất </a></button>
+    </div>
+
+    <script src='../static/js/app.js'></script>
+    <script src='../static/js/recorder.js'></script>
+    
+    
+
+{%endblock%}
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Recording</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+    var id = {{sens_arr}};
+    var user_name = '{{user_name}}';
+    </script>
+    <script type="text/javascript" src="/static/js/recorder.js"></script>
+    <style>
+        table, th, td {
+  border: 1px solid black;
+}
+    </style>
+</head>
+<body>
+    <div class="user-info">
+        <h4>Xin chào: {{fullname}}</h4>
+        <h6>ID: {{id}}</h6>
+        <h5>Số câu đã ghi âm được: {{complete_sens}}</h5>
+        <h5>Số câu đã bỏ qua: {{skip_sens}}</h5>
+        <h5>Số câu còn phải thu: {{left_sens}}</h5>
+    </div>
+
+<table style="width:100%">
+    <tr>
+        <th>Id</th>
+        <th width="70%">Câu</th>
+        <th>Controls</th>
+        <th>File</th>
+    </tr>
+    {% for i in range(0,sens_arr_number) %}
+    <tr>
+        <td id="colId_{{i}}" class="colId" align="center">{{id[i]}}</td>
+        <td id="colCau_{{i}}" align="left">
+            <label>
+                {{sentence[i]}}
+            </label>
+        </td>
+        <td id="colControls_{{i}}" align="center">
+            <button id="recordButton_{{i}}">Record</button>
+            <!--            <button id="pauseButton" disabled>Pause</button>-->
+            <button id="stopButton_{{i}}" disabled>Stop</button>
+        </td>
+        <td id="colWav_{{i}}" align="center">
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+<br><br>
+<div align="center">
+    <a href="{{url_for('record')}}" id="upAudio" onclick="upload()" >Tải lên và tiếp tục thu âm </a>
+    <a href="{{url_for('record')}}" >Bỏ qua </a>
+    <a href="{{url_for('logout')}}" >Đăng xuất </a>
+</div>
+<!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
+<!--<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>-->
+    <script type="text/javascript" src="/static/js/app.js"></script>
+
+</body>
+</html> -->
