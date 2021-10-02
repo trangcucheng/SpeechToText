@@ -6,7 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="../static/css/style.css">
+    <link rel = "icon" href ="../static/img/logo.jpg" type = "image/x-icon">
+    <link rel="stylesheet" href="../static/css/fonts/themify-icons-font/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="../static/css/global.css">
+   
+    
     <title>{{title}}</title>
+    
+    <!-- của Tables -->
+    <script src="../static/css/bootstrap/bootstrap.min.css"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../static/DataTables/datatables.min.js"></script>
+    <script src="../static/DataTables/DataTables-1.11.3/js/dataTables.bootstrap4.min.js"></script>
     {% block script %}
     {%endblock%}
     {%block style%}
@@ -15,17 +28,44 @@
 <body>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category }}">
-          {{ message }}
-        </div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-    <div class="container">
-        {% block content %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{category}} show">
+                {{message}}
+            </div>
+        {% endfor%}
+    {% endif%}
+    {%endwith%}
 
-        {%endblock%}
-    </div>
+    
+    {% block content %}
+    
+    {%endblock%}
+    
+    <footer class="row">
+        <div class="col-3">
+            <h6>Về chúng tôi:</h6>
+            <span></span>
+            <div class="clearfix"></div>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi corporis sed tempora laborum quam unde?</p>
+        </div>
+        <div class="col-3">
+            <h6>Thông tin liên hệ:</h6>
+            <span></span>
+            <div class="clearfix"></div>
+            <p><i class="ti-home"></i> Địa chỉ</p>
+            <p><i class="ti-email"></i> lorem@gmail.com</p>
+            <p><i class="ti-mobile"></i> 0123456789</p>
+        </div>
+        <div class="col-3">
+            <h6>Phản hồi:</h6>
+            <span></span>
+            <div class="clearfix"></div>
+        </div>
+        <hr>
+        <div class="copyright">
+            <p>&copy; 2021-All rights served</p>
+        </div>
+    </footer>
+    
 </body>
 </html>

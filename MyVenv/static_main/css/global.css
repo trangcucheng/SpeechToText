@@ -1,0 +1,63 @@
+@font-face {
+    font-family: "SemiBoldItalic";
+    src: url("../css/fonts/font-family/Poppins-SemiBoldItalic.ttf");
+}
+
+@font-face {
+    font-family: "Regular";
+    src: url("../css/fonts/font-family/NotoSansSC-Regular.otf");
+}
+
+@font-face {
+    font-family: "NotoSans";
+    src: url("../css/fonts/font-family/NotoSansSC-Light.otf");
+}
+
+@font-face {
+    font-family: "QuickSands";
+    src: url('../css/fonts/font-family/Quicksand-SemiBold.ttf');
+}
+*{
+    margin: auto;
+    padding: auto;
+    box-sizing: border-box;
+    font-family: "Regular";
+}
+
+li{
+    list-style: none;
+}
+
+.upperCase{
+    text-transform: uppercase;
+}
+
+.left-float{
+    float: left!important;
+}
+
+.right-float{
+    float: right!important;
+}
+
+.center-text{
+    text-justify: center!important;
+}
+
+.clearfix{
+    clear: both;
+}
+
+.red-color{
+    color: red;
+}
+
+a{
+    text-decoration: none!important;
+}
+
+.colId{
+    line-height: 100%;
+}
+
+

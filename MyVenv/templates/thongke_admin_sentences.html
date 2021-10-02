@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thống kê - Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../static/css/bootstrap/bootstrap.min.css"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../static/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="../static/css/global.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/fonts/themify-icons-font/themify-icons/themify-icons.css">
+    <link rel = "icon" href ="../static/img/logo.jpg" type = "image/x-icon">
+    <link rel="stylesheet" href="../static/css/bootstrap/bootstrap-grid.css">
+    <script src="../static/DataTables/datatables.min.js"></script>
+    <script src="../static/DataTables/DataTables-1.11.3/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#myTable').dataTable({}); // dòng này để nhúng bảng biểu thành dạng bảng được phân trang
+        });
+    </script>
+    
+    
+</head>
+<body>
+    <header >
+        <div id="nav">
+            <div id="logo" class="col-4 left-float"><i class="ti-microphone"></i>Audio Data Collection</div>
+            <ul id="nav-links" class="col-8 ">
+                <li class="upperCase" id="by-sentences"><a href="{{url_for('thongke_admin')}}">Trang chủ</a></li>
+                <li class="upperCase" id="by-users"><a href="{{url_for('thongke_admin_user')}}">Thống kê người dùng</a></li> 
+                <li class="upperCase" id="by-sentences"><a href="{{url_for('thongke_admin_sentences')}}">Thống kê câu</a></li>
+                <li class="upperCase"><a href="{{url_for('logout')}}" >Đăng xuất </a></li> 
+                
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+    </header>
+
+<div class="container">
+    <div class="admin-info" style="margin-top: 100px;margin-bottom: 50px;">
+        <h4>Xin chào Admin: {{fullname}}</h4>
+        
+    </div>
+
+   
+   
+        <div class="sentences-table">
+            <h3>Số câu đã được thu âm: {{sens_num}}</h3>
+            <table class="table table-hover"  id="myTable">
+                <thead>
+                    <tr class="thead">
+                        <th>ID</th>
+                        <th>Nội dung</th>
+                        <th>Số files thu được</th>
+                        <th>Nghe thử</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sentence in sentences_info%}
+                    <tr class="tbody">
+                        <td class="colId col-1">{{sentence[0]}}</td>
+                        <td class="content col-7">{{sentence[1]}}</td>
+                        <td class="col-2">{{sentence[2]}}</td>
+                        <td class="col-2"><a href="{{url_for('nghethu_each_sen', id = sentence[0])}}">Nghe thử</a></td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+
+        
+    </div>
+    
+    <a id="back-to-top" href="#" class="back-to-top" role="button" title="Click to return on the top page" style="display: inline;">
+        <i class="ti-angle-double-up"></i>
+    </a>
+    
+</div>
+
+</body>
+</html>
+

@@ -1,23 +1,45 @@
 {% extends "layout.html" %}
 
-{% block content%}
-<form action="/login" method='POST'>
-    <!-- fieldset - nhóm các thành phần bên trong form, tạo đường bao ngoài bao quanh các thành phần trong form -->
-    <fieldset class="form-group">
-        <!-- legend: định nghĩa một chú thích cho các phần tử fieldset -->
-        <div class="form-group">
-            <label for="username" class="form-control-label">Tên đăng nhập:</label>
-            <input type="text" name="username" id="username" class="form-control form-control-lg" placeholder="Ex: trangtrang" required>
-        </div>
 
-        <div class="form-group">
-            <label for="password" class="form-control-label">Mật khẩu: </label>
-            <input type="text" name="password" id="password" class="form-control form-control-lg" placeholder="******" required>
-        </div>
-    </fieldset>
-    <div class="form-group">
-        <input type="submit" class="btn btn-outline-info" value="Đăng nhập">
+{% block content%}
+<header >
+    <div id="nav row">
+        <div id="logo" class="col-8 left-float"><i class="ti-microphone"></i>Audio Data Collection</div>
+        <ul id="nav-links" class="col-4 ">
+            <li class="upperCase right-float"><a href="{{url_for('register', title='Đăng ký')}}">Đăng ký</a></li>
+            <li class="upperCase right-float"><a href="{{url_for('login', title='Đăng nhập')}}">Đăng nhập</a></li>
+        </ul>
+        <div class="clearfix"></div>
     </div>
-    <p>Bạn chưa có tài khoản? </p><a href="{{url_for('register')}}">Đăng kí</a>
-</form>
+</header>
+<div class="container">
+    <form action="/login" method='POST' class="modal">
+        <div class="modal-container">
+                <!-- <div class="title-box-layout">
+                    <p>Let's go!</p>
+                </div> -->
+                <fieldset class="form-group modal-content">
+                    <div class="form-group input-info">
+                        <label for="username" class="form-control-label">Tên đăng nhập<i class="red-color">*</i> :</label>
+                        <input type="text" name="username" id="username" class="form-control" required>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="password" class="form-control-label">Mật khẩu<i class="red-color">*</i> : </label>
+                        <input type="password" name="password" id="password" class="form-control " required>
+                    </div>
+    
+                    <div class="form-group">
+                        <input type="submit" class="submit-btn" value="Đăng nhập">
+                    </div>
+    
+                    <p class="left-float">Bạn chưa có tài khoản? <a href="{{url_for('register')}}">Đăng kí</a></p>
+    
+                </fieldset>
+                
+        </div>
+    </form>
+</div>
+
+
 {% endblock %}

@@ -13,13 +13,13 @@ var arrStopButton = [];
 var cur_id;
 var arrBlob = [];
 var fileNames = [];
-for (let i=0;i<sen_id.length;i++) {
+for (let i=0;i<skipsens_id.length;i++ ) {
     var recordButton = document.getElementById("recordButton_" + i);
     var stopButton = document.getElementById("stopButton_" + i);
     arrRecordButton.push(recordButton);
     arrStopButton.push(stopButton);
 }
-for (let i=0;i<sen_id.length;i++ ) {
+for (let i=0;i<skipsens_id.length;i++ ) {
     arrRecordButton[i].addEventListener("click", function () {
         startRecording(i);
     }, false);
@@ -78,8 +78,8 @@ function stopRecording(_id) {
 
 
 function createDownloadLink(blob) {
-    console.log("current id : "+sen_id[cur_id]);
-    var filename = username+"_"+user_id+"_" +sen_id[cur_id]+".wav";
+    console.log("current id : "+skipsens_id[cur_id]);
+    var filename = username+"_"+user_id+"_" +skipsens_id[cur_id]+".wav";
     fileNames[cur_id] = filename;
     arrBlob[cur_id] = blob;
     let url = URL.createObjectURL(blob);
@@ -104,7 +104,7 @@ function upload() {
         let xhr = new XMLHttpRequest();
         var fd = new FormData();
         // fd.append("audio_data", arrBlob[0], fileNames[0]);
-        for (let j=0;j<sen_id.length;j++){
+        for (let j=0;j<skipsens_id.length;j++){
             if (arrBlob[j]!=undefined)
                 fd.append("audio_data", arrBlob[j], fileNames[j]);
             // alert(fileNames[j]);
@@ -117,6 +117,6 @@ function upload() {
 }
     else{
         alert("Chưa đủ file thu âm!");
-        window.location= "/skip_show"
+        window.location= request.url
     }
 }

@@ -34,7 +34,6 @@ def get_all_info():
         each_file = []
         c.execute("select save_dir_url from relationships where user_id = {0}".format(i))
         for item in (c.fetchall()):
-            print(item)
             each_file.append(os.path.join("static/audios", item[0]))
         files_path_each_user.append(each_file)
     

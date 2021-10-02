@@ -4,105 +4,102 @@
     <meta charset="UTF-8">
     <title>Thống kê - Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="../static/css/bootstrap/bootstrap.min.css"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../static/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="../static/css/global.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/fonts/themify-icons-font/themify-icons/themify-icons.css">
+    <link rel = "icon" href ="../static/img/logo.jpg" type = "image/x-icon">
+    <link rel="stylesheet" href="../static/css/bootstrap/bootstrap-grid.css">
+    <script src="../static/DataTables/datatables.min.js"></script>
+    <script src="../static/DataTables/DataTables-1.11.3/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"></script>
-  
     <script>
         $(document).ready(function () {
             $('#myTable').dataTable({}); // dòng này để nhúng bảng biểu thành dạng bảng được phân trang
         });
-
     </script>
-    <style>
-        table, th, td{
-            border: 1px solid #000;
-        }
-        div.sentences-table,
-        div.users-table{
-            display: none;
-        }
-
-        div.sentences-table.show,
-        div.users-table.show{
-            display: block!important;
-        }
-
+    <script type="text/javascript">
+        // Load google charts
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
         
-
-    </style>
+        // Draw the chart and set the chart values
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Số câu đã thu được', {{complete_per}}],
+          ['Số câu bị bỏ qua', {{skip_per}}],
+          ['Số câu còn lại', {{remain_per}}],
+         
+        ]);
+        
+          // Optional; add a title and set the width and height of the chart
+          var options = {'title':'Thống kê thu âm', 'width':600, 'height':400};
+        
+          // Display the chart inside the <div> element with id="piechart"
+          var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+          chart.draw(data, options);
+        }
+        </script>
+    
 </head>
 <body>
+    <header >
+        <div id="nav">
+            <div id="logo" class="col-4 left-float"><i class="ti-microphone"></i>Audio Data Collection</div>
+            <ul id="nav-links" class="col-8 ">
+                <li class="upperCase" id="by-sentences"><a href="#">Trang chủ</a></li>
+                <li class="upperCase" id="by-users"><a href="{{url_for('thongke_admin_user')}}">Thống kê người dùng</a></li> 
+                <li class="upperCase" id="by-sentences"><a href="{{url_for('thongke_admin_sentences')}}">Thống kê câu</a></li>
+                <li class="upperCase"><a href="{{url_for('logout')}}" >Đăng xuất </a></li>  
+ 
+                
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+    </header>
 
-<div class="container mt-3">
-    <div class="admin-info">
+<div class="container">
+    <div class="admin-info left-float" style="margin-top: 100px;margin-bottom: 50px;">
         <h4>Xin chào Admin: {{fullname}}</h4>
-        <h6>ID: {{id}}</h6>
-        <h4>Thống kê thu âm</h4>
-        <button id="by-users">Thống kê theo người dùng</button>
-        <button id="by-sentences">Thống kê theo câu</button>
-        <a href="">
-            <button>Xuất file lst</button>
-        </a>
-        <a href="{{url_for('logout')}}" >Đăng xuất </a>
+        
     </div>
-    <div class="users-table ">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Tên đăng nhập</th>
-                    <th>Tên đầy đủ</th>
-                    <th>Số câu đã thu</th>
-                    <th>Số câu bỏ qua</th>
-                    <th>Số câu còn lại</th>
-                    <th>Nghe thử</th>
-                </tr>
-            </thead>
-            <tbody>
-                 {% for user in users_info %}
-                <tr>
-                    <td>{{user[0]}}</td>
-                    <td>{{user[1]}}</td>
-                    <td>{{user[2]}}</td>
-                    <td>{{user[3]}}</td>
-                    <td>{{user[4]}}</td>
-                    <td>{{user[5]}}</td>
-                    <td><a href="{{url_for('nghethu_each',id =user[0])}}">Nghe thử</a></td>
-                </tr>
-                {%endfor%}
-            </tbody>
-        </table>
-    </div>
+    <div class="clearfix"></div>
 
-    <div class="sentences-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nội dung</th>
-                    <th>Số files thu được</th>
-                    <th>Nghe thử</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for sentence in sentences_info%}
-                <tr>
-                    <td>{{sentence[0]}}</td>
-                    <td>{{sentence[1]}}</td>
-                    <td>{{sentence[2]}}</td>
-                    <td><a href="{{url_for('nghethu_each_sen', id = sentence[0])}}">Nghe thử</a></td>
-                </tr>
-                {%endfor%}
-            </tbody>
-        </table>
-    </div>
+    <div id="piechart" style="margin-bottom: 50px; display: none;"></div>    
+   
+    <ul class="sen-status row">
+        <li class="col-2 ">
+            <p class="name">Tổng số câu:</p>
+            <div class="num">{{all_sens_num}}</div>
+        </li>
+
+        <li class="col-2 ">
+            <p class="name">Số câu đã được thu âm:</p>
+            <div class="num">{{complete_per}}</div>
+        </li>
+
+        <li class="col-2 ">
+            <p class="name">Số câu bị bỏ qua: </p>
+            <div class="num">{{skip_per}}</div>
+        </li>
+
+        <li class="col-2 ">
+            <p class="name">Số câu còn lại:</p>
+            <div class="num">{{remain_per}}</div>
+        </li>
+        
+    </ul>
+
+    
+    <a id="back-to-top" href="#" class="back-to-top" role="button" title="Click to return on the top page" style="display: inline;">
+        <i class="ti-angle-double-up"></i>
+    </a>
     <script>
         let userBtn = document.getElementById('by-users');
         let senBtn = document.getElementById('by-sentences');

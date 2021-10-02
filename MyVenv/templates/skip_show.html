@@ -1,63 +1,69 @@
-{% extends "layout.html" %}
-{%block script%}
+{% extends "table.html" %}
+
+{%block title%}
+<title>Câu bỏ qua</title>
+{%endblock%}
+
+{%block script_extra%}
+<script>
+    $(document).ready(function () {
+        $('#myTable').dataTable({}); // dòng này để nhúng bảng biểu thành dạng bảng được phân trang
+    });
+</script>
+
 <script type="text/javascript">
-    var sen_id = {{sen_id}};
-    var username = "{{username}}"
-    var user_id = {{id}}
+    var skipsens_id = {{skip_sens_id}};
+    var username = "{{username}}";
+    // var skip_sens_content = {{skip_sens_content}};
+    var user_id = {{id}};
 </script>
 {%endblock%}
-{% block style%}
-<style>
-    table, th, td{
-        border: 1px solid #000;
-    }
-</style>
-{%endblock%}
-{% block content%}
 
-    <div class="user-info">
-        <h4>Xin chào: {{fullname}}</h4>
-        <h6>ID: {{id}}</h6>
-        <h5>Số câu đã ghi âm được: {{complete_sens}}</h5>
-        <h5>Số câu đã bỏ qua: {{skip_sens}}</h5>
-        <h5>Số câu còn phải thu: {{left_sens}}</h5>
-        <a href="{{url_for('nghethu_each', id = id)}}">Nghe thử</a>
-    </div>
-    <table style="width:100%">
-        <tr>
-            <th>ID</th>
-            <th width="70%">Nội dung</th>
-            <th>Controls</th>
-            <th>File</th>
+    
+{%block tables%}    
+    <table class="table table-hover" id="myTable">
+        <thead >
+        <tr class="thead">
+            <th class="column1">ID</th>
+            <th class="column2">Nội dung</th>
+            <th class="column3">Controls</th>
+            <th class="column4">File</th>
         </tr>
-        
-        {% for i in range(0,skip_sens) %}
-        <tr>
-            <td id="colId_{{i}}" class="colId">{{sen_id[i]}}</td>
-            <td id="colCau_{{i}}" class="content">
-                <label>{{skip_sens_content[i]}}</label>
-            </td>
-            <td id="colControls_{{i}}" class="controls">
-                <button id="recordButton_{{i}}" class="recordBtn">Ghi âm</button>
-                <button class="stop" id="stopButton_{{i}}" disabled>Dừng lại</button>
-            </td>
-            <td id="colWav_{{i}}">
+        </thead>
 
-            </td>
-        </tr>
-        {%endfor%}
+        <tbody id="myBody">
+            {% for i in range(0,skip_sens) %}
+            <tr class="tbody">
+                <td id="colId_{{i}}" class="colId column1">{{skip_sens_id[i]}}</td>
+                <td id="colCau_{{i}}" class="content column2">
+                    <label>{{skip_sens_content[i]}}</label>
+                </td>
+                <td id="colControls_{{i}}" class="controls column3">
+                    <button id="recordButton_{{i}}" class="recordBtn btn btn-info" title="Record"><i class="ti-control-record"></i></button>
+                    <button class="stop btn btn-info" id="stopButton_{{i}}" title="Stop" disabled><i class="ti-control-play"></i></button>
+                </td>
+                <td id="colWav_{{i}}" class="column4">
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+       
 
     </table>
-    <div align="center">
-        <button id="upAudio" onclick="upload()">Tải lên và tiếp tục thu âm</button>
-        <button><a href="{{url_for('skip')}}" >Bỏ qua </a></button>
-        <button><a href="{{url_for('logout')}}" >Đăng xuất </a></button>
-    </div>
+{%endblock%}
 
-    <script src='../static/js/app_skip.js'></script>
-    <script src='../static/js/recorder.js'></script>
-    
-    
+{%block content%}
 
+{%endblock%}
+
+{%block extra%}
+<div align="center">
+    <button id="upAudio" onclick="upload()" class="btn btn-outline-success animated-swing"><i class="ti-upload"></i> Tải lên</button>
+</div>
+
+{%endblock%}
+
+{%block script%}
+<script src='../static/js/app_skip.js'></script>
 {%endblock%}
 
