@@ -682,6 +682,24 @@ https://templatemo.com/tm-538-digital-trend
     text-align: center;
   }
 
+  .contact-icon{
+    cursor: pointer;
+    position: fixed;
+    bottom: 60px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #c03636;
+    color: #fff;
+    text-align: center;
+    opacity: .6;
+    font-size: 20px;
+    border-radius: 50%;
+    z-index: 9999;
+    border: 1px solid #c03636;
+  }
+
   .back-to-top{
     cursor: pointer;
     position: fixed;

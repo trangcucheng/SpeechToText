@@ -20,16 +20,8 @@ c= conn.cursor()
 # c.execute("insert into users values(1,'trangyeushin','trangtrang','Nguyễn Huyền Trang',0,1,'')")
 # c.execute("drop table users")
 # c.execute("delete from users where id >0")
-username="trangyeushin"
-password = "trangtrang"
-c.execute("select id from users where username = '{0}' and password = '{1}'".format(username, password))
+
 # c.execute("select id from users where username = 'trangyeushin'")
-print(c.fetchall())
-id = c.fetchall()
-if not id:
-    print("Hello!")
-else:
-    print("cuttt")
 # id_arr=c.fetchall()
 # user_id =9
 # c.execute("select fullname from users where id = {0}".format(user_id))
@@ -40,6 +32,19 @@ else:
 #     print(id)
 # except:
 #     print("No")
+
+
+# ==== tạo cơ sở lưu lời nhắn của người dùng
+# c.execute('''create table messages(
+#     id INTEGER PRIMARY KEY AUTOINCREMENT,
+#     email TEXT NOT NULL,
+#     msg TEXT
+# )''')
+# c.execute("alter table messages add column isCheck INTEGER DEFAULT 0")
+# c.execute("insert into messages(email, msg) values('trangcucheng@gmail.com','Nguyễn Thị Huyền Trang')")
+# c.execute("select * from messages")
+c.execute("select * from users")
+print(c.fetchall())
 conn.commit()
 conn.close()
 

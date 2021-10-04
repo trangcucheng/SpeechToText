@@ -47,14 +47,36 @@ c= conn.cursor()
 #     print("No!")
 # c.execute("select * from transcripts where save_folder != '' "
 
-c.execute("select * from transcripts where sen_id >= 1 and sen_id <=10")
-sens_arr_temp = c.fetchall()
-sens_arr=[]
+# c.execute("select * from transcripts where sen_id >= 1 and sen_id <=10")
+# sens_arr_temp = c.fetchall()
+# sens_arr=[]
        
-for sen in sens_arr_temp:
-    sen[1].capitalize()
-    item = [sen[0],sen[1].capitalize(),sen[2]]
-    sens_arr.append(item)
-print(sens_arr)
+# for sen in sens_arr_temp:
+#     sen[1].capitalize()
+#     item = [sen[0],sen[1].capitalize(),sen[2]]
+#     sens_arr.append(item)
+# print(sens_arr)
+
+# c.execute("select save_dir_url from relationships")
+# arr = c.fetchall()
+# print(arr)
+# conn.commit()
+# recorded_sen =[]  #những câu đã thu rồi
+# for item in arr:
+#     temp1=item[0].split("_")
+#     # print(len(temp1))
+#     temp = str(temp1[3])
+#     # print(temp)
+#     temp2= temp.split(".")
+#     id = int(temp2[0])
+#     recorded_sen.append(id)
+# max_sen = max(recorded_sen)  # câu lớn nhất thu được
+# # print(recorded_sen)
+# skipped_sen=[] # những câu bị bỏ qua (thống kê tổng quát, k kể người dùng)
+# for i in range(0,max_sen+1):
+#     if i not in recorded_sen:
+#         skipped_sen.append(i)
+c.execute("select * from relationships")
+print(c.fetchall())
 conn.commit()
 conn.close()

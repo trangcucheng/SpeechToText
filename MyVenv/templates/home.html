@@ -25,21 +25,11 @@
 
 </head>
 <body>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            <div class="alert alert-{{category}}">
-                {{message}}
-            </div>
-        {% endfor%}
-    {% endif%}
-    {%endwith%}
-
     <div id="wrapper">
          <!-- MENU BAR -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="#">
               <i class="ti-microphone"></i>
               Audio Data Collection
             </a>
@@ -52,13 +42,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <p class="nav-link" id="login" >Đăng nhập</p>
+                        <a href="{{url_for('login')}}" class="nav-link" >Đăng nhập</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{url_for('register')}}" class="nav-link" id="register" >Đăng ký</a>
+                        <a href="{{url_for('register')}}" class="nav-link">Đăng ký</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{url_for('contact', title='Liên hệ')}}" class="nav-link contact">Liên hệ</a>
+                        <a href="{{url_for('contact')}}" class="nav-link contact">Liên hệ</a>
                     </li>
                 </ul>
             </div>
@@ -167,12 +157,7 @@
                </div>
 
           </div>
-          <!-- <div class="row" >
-               <div class="col-lg-12 col-md-12 col-12"  data-aos="fade-up" data-aos-delay="400">
-                    <p>Copyright &copy 2021 MTA</p>
-               </div>
-          </div> -->
-        
+         
       </div>
       
     </footer>
@@ -180,38 +165,8 @@
      <p>Copyright &copy 2021 MTA</p>
     </div>
 
-        <!-- SHOW UP LOGIN FORM -->
-    <form action="/login" method='POST' class="modal-form">
-        <div class="modal-container">
-                <!-- <div class="title-box-layout">
-                    <p>Let's go!</p>
-                </div> -->
-                <div class="modal-title">
-                    <h1>Welcome!</h1>
-                    <i class="ti-close"></i>
-                </div>
+      
 
-                <fieldset class="form-group modal-content">
-                    <div class="form-group input-info">
-                        <label for="username" class="form-control-label">Tên đăng nhập<i>*</i> :</label>
-                        <input type="text" name="username" id="username" class="form-control" required>
-                    </div>
-    
-                    <div class="form-group">
-                        <label for="password" class="form-control-label">Mật khẩu<i>*</i> : </label>
-                        <input type="password" name="password" id="password" class="form-control " required>
-                    </div>
-    
-                    <div class="form-group">
-                        <input type="submit" class="submit-btn btn btn-info" value="Đăng nhập">
-                    </div>
-    
-                    <p>Bạn chưa có tài khoản? <i class="ti-hand-point-right"></i><a href="{{url_for('register')}}"> Đăng kí</a></p>
-    
-                </fieldset>
-                
-        </div>
-    </form>
     <a id="back-to-top" href="#" class="back-to-top animated-swing" role="button" title="Click to return on the top page" style="display: inline;">
         <i class="ti-angle-double-up"></i>
     </a>
@@ -227,22 +182,7 @@
      <script src="../static/js/smoothscroll.js"></script>
      <script src="../static/js/custom.js"></script>
      <script src="../static/js/jquery-3.6.0.min.js"></script>
-     <script>
-         $(document).ready(function(){
-            $("#login").click(function(){
-                $(".modal-form").fadeIn();
-            });
-            $(".ti-close").click(function(){
-                $(".modal-form").hide();
-            });
-            $(".modal-form").click(function(){
-                $(".modal-form").hide();
-            });
-            $(".modal-container").click(function(event){
-                event.stopPropagation();
-            })
-         })
-     </script>
+     
 
 </body>
 </html>

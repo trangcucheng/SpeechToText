@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Thống kê thu âm - Admin</title>
+
+  <link rel="stylesheet" href="../static/css/style_admin.css">
+  <link rel="stylesheet" href="../static/css/bootstrap/bootstrap.css">
+  <link rel="stylesheet" href="../static/css/fonts/themify-icons-font/themify-icons/themify-icons.css">
+  <script src="../static/js/jquery-3.6.0.min.js"></script>
+  <script src="../static/DataTables/datatables.min.js"></script>
+  <script src="../static/DataTables/DataTables-1.11.3/js/dataTables.bootstrap4.min.js"></script>
+  <script>
+        $(document).ready(function () {
+            $('#myTable').dataTable({}); // dòng này để nhúng bảng biểu thành dạng bảng được phân trang
+        });
+  </script>
+</head>
+<body>
+  <div class="body-wrapper">
+    <!-- partial:partials/_sidebar.html -->
+    <aside class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open">
+      <div class="mdc-drawer__header">
+        <a href="#" class="brand-logo">
+            <i class="ti-microphone"></i>
+            Audio Data Collection
+        </a>
+      </div>
+      <div class="mdc-drawer__content">
+        <div class="user-info">
+          <p class="name">Admin</p>
+          <p class="email">admin@gmail.com</p>
+        </div>
+        <div class="mdc-list-group">
+          <nav class="mdc-list mdc-drawer-menu">
+            <div class="mdc-list-item mdc-drawer-item">
+              <a class="mdc-drawer-link" href="{{url_for('admin')}}">
+                <i class="ti-home" aria-hidden="true"></i>
+                Tổng quan
+              </a>
+            </div>
+
+            <div class="mdc-list-item mdc-drawer-item">
+                <div class="tables">
+                    <a class="mdc-expansion-panel-link" href="#" data-toggle="expansionPanel">
+                        <i class="ti-layout-grid3-alt" aria-hidden="true"></i>
+                        Bảng số liệu
+                    </a>
+                    <div class="mdc-expansion-panel" id="sub-menu">
+                        <nav class="mdc-list mdc-drawer-submenu">
+                          <div class="mdc-list-item mdc-drawer-item">
+                            <a class="mdc-drawer-link" href="#">
+                              Theo người dùng
+                            </a>
+                          </div>
+                          <div class="mdc-list-item mdc-drawer-item">
+                            <a class="mdc-drawer-link" href="{{url_for('sentences_collections')}}">
+                              Theo câu
+                            </a>
+                          </div>
+                        </nav>
+                      </div>
+                </div>
+                
+            </div>
+
+            
+            <div class="mdc-list-item mdc-drawer-item">
+              <a class="mdc-drawer-link" href="#">
+                <i class="ti-comment-alt" aria-hidden="true"></i>
+                Thông tin phản hồi
+              </a>
+            </div>
+
+           
+            
+          </nav>
+        </div>
+       
+        
+      </div>
+    </aside>
+    <!-- partial -->
+    <div class="main-wrapper mdc-drawer-app-content">
+      <!-- partial:partials/_navbar.html -->
+      <header class="mdc-top-app-bar">
+        <div class="mdc-top-app-bar__row">
+    
+          <div class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end mdc-top-app-bar__section-right">
+            <div class="menu-button-container menu-profile d-none d-md-block">
+              <button class="mdc-button mdc-menu-button">
+                <span class="d-flex align-items-center">
+                  <span class="figure">
+                    <img src="../static/img/user-icon.png" alt="user" class="user">
+                  </span>
+                  <span class="user-name">{{fullname}}</span>
+                </span>
+              </button>
+              
+            </div>
+            <div>              
+              <a href="{{url_for('logout')}}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Đăng xuất</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- partial -->
+      <div class="page-wrapper mdc-toolbar-fixed-adjust">
+        <main class="content-wrapper">
+          <h3>Tổng số người dùng: {{users_num}}</h3>
+          <button class="btn btn-warning"><a href="{{url_for('download_users')}}">Tải danh sách</a></button>
+          <table class="table table-hover" id="myTable">
+            <thead>
+                <tr class="thead">
+                    <th>ID</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Tên đầy đủ</th>
+                    <th>Số câu đã thu</th>
+                    <th>Số câu bỏ qua</th>
+                    <th>Tổng thời gian</th>
+                </tr>
+            </thead>
+            <tbody id="myBody">
+                 {% for user in users_info %}
+                <tr class="tbody">
+                    <td class="colId col col-1">{{user[0]}}</td>
+                    <td class="col col-2">{{user[1]}}</td>
+                    <td class="col col-3">{{user[2]}}</td>
+                    <td class="col col-2">{{user[3]}}</td>
+                    <td class="col col-2">{{user[4]}}</td>
+                    <td class="col col-2">{{user[5]}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        
+            
+        </main>
+        <!-- partial:partials/_footer.html -->
+        <footer style="text-align: center;line-height:100px">
+          <p >Copyright &copy 2021 MTA</p>
+        </footer>
+        <!-- partial -->
+      </div>
+    </div>
+  </div>
+ <!-- <script src="../static/js/jquery-3.6.0.min.js"></script>
+  <script>
+      $(document).ready(function() {
+    $('#myInput').on('keyup', function(event) {
+      event.preventDefault();
+      /* Act on the event */
+      var tukhoa = $(this).val().toLowerCase();
+      $('#myTable tr').filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(tukhoa)>-1);
+      });
+    });
+  });
+  </script> -->
+</body>
+</html> 

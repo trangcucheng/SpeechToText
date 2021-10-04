@@ -1,45 +1,245 @@
-{% extends "layout.html" %}
-
-
-{% block content%}
-<header >
-    <div id="nav row">
-        <div id="logo" class="col-8 left-float"><i class="ti-microphone"></i>Audio Data Collection</div>
-        <ul id="nav-links" class="col-4 ">
-            <li class="upperCase right-float"><a href="{{url_for('register', title='Đăng ký')}}">Đăng ký</a></li>
-            <li class="upperCase right-float"><a href="{{url_for('login', title='Đăng nhập')}}">Đăng nhập</a></li>
-        </ul>
-        <div class="clearfix"></div>
-    </div>
-</header>
-<div class="container">
-    <form action="/login" method='POST' class="modal">
-        <div class="modal-container">
-                <!-- <div class="title-box-layout">
-                    <p>Let's go!</p>
-                </div> -->
-                <fieldset class="form-group modal-content">
-                    <div class="form-group input-info">
-                        <label for="username" class="form-control-label">Tên đăng nhập<i class="red-color">*</i> :</label>
-                        <input type="text" name="username" id="username" class="form-control" required>
+<!DOCTYPE html>
+            <html lang="en">
+            <head>
+            
+                 <title>Đăng nhập</title>
+                 <link rel = "icon" href ="../static/img/logo.jpg" type = "image/x-icon">
+                 <meta charset="UTF-8">
+                 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+                 <meta name="description" content="">
+                 <meta name="keywords" content="">
+                 <meta name="author" content="">
+                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+            
+                 <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+                 <link rel="stylesheet" href="../static/css/aos.css">
+                 <link rel="stylesheet" href="../static/css/owl.carousel.min.css">
+                 <link rel="stylesheet" href="../static/css/owl.theme.default.min.css"> 
+                 <link rel="stylesheet" href="../static/css/fonts/themify-icons-font/themify-icons/themify-icons.css">  
+                 <!-- <link rel="stylesheet" href="../static/css/bootstrap/bootstrap.css"> -->
+                 <!-- Main css -->
+                 <link rel="stylesheet" href="../static/css/templatemo-digital-trend.css">
+             
+            </head>
+            <body>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{category}}">
+                            {{message}}
+                        </div>
+                    {% endfor%}
+                {% endif%}
+                {%endwith%}
+            
+                <div id="wrapper">
+                     <!-- MENU BAR -->
+                <nav class="navbar navbar-expand-lg">
+                    <div class="container">
+                        <a class="navbar-brand" href="#">
+                          <i class="ti-microphone"></i>
+                          Audio Data Collection
+                        </a>
+            
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+            
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav ml-auto">
+                                <li class="nav-item">
+                                    <p class="nav-link" id="login" >Đăng nhập</p>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{url_for('register')}}" class="nav-link" id="register" >Đăng ký</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{url_for('contact')}}" class="nav-link contact">Liên hệ</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-    
-                    <div class="form-group">
-                        <label for="password" class="form-control-label">Mật khẩu<i class="red-color">*</i> : </label>
-                        <input type="password" name="password" id="password" class="form-control " required>
-                    </div>
-    
-                    <div class="form-group">
-                        <input type="submit" class="submit-btn" value="Đăng nhập">
-                    </div>
-    
-                    <p class="left-float">Bạn chưa có tài khoản? <a href="{{url_for('register')}}">Đăng kí</a></p>
-    
-                </fieldset>
+                </nav>
+            
+            
+                 <!-- HERO -->
+                 <section class="hero hero-bg d-flex justify-content-center align-items-center">
+                           <div class="container">
+                                <div class="row">
+            
+                                    <div class="col-lg-6 col-md-10 col-12 d-flex flex-column justify-content-center align-items-center">
+                                          <div class="hero-text">
+            
+                                               <h1 class="text-white" data-aos="fade-up">Lorem ipsum dolor sit amet consectetur.</h1>
+            
+                                               <a href="{{url_for('contact', title='Liên hệ')}}" class="custom-btn btn-bg btn mt-3" data-aos="fade-up" data-aos-delay="100">Let us discuss together!</a>
+            
+                                               <strong class="d-block py-3 pl-5 text-white" data-aos="fade-up" data-aos-delay="200"><i class="ti-phone mr-2"></i> +123456789</strong>
+                                          </div>
+                                    </div>
+            
+                                    <div class="col-lg-6 col-12">
+                                      <div class="hero-image" data-aos="fade-up" data-aos-delay="200">
+            
+                                        <img src="../static/img/record3.svg" class="img-fluid" alt="record3">
+                                      </div>
+                                    </div>
+            
+                                </div>
+                           </div>
+                 </section>
+            
+                 <!-- TESTIMONIAL -->
+                 <section class="testimonial section-padding">
+                      <div class="container">
+                           <div class="row">
+            
+                                <div class="col-lg-6 col-md-5 col-12">
+                                    <div class="contact-image" data-aos="fade-up">
+            
+                                      <img src="../static/img/audio1.png" class="img-fluid" alt="website">
+                                    </div>
+                                </div>
+            
+                                <div class="col-lg-6 col-md-7 col-12">
+                                  <h4 class="my-5 pt-3" data-aos="fade-up" data-aos-delay="100">Client Testimonials</h4>
+            
+                                  <div class="quote" data-aos="fade-up" data-aos-delay="200"></div>
+            
+                                  <h2 class="mb-4" data-aos="fade-up" data-aos-delay="300">Lorem ipsum Sed eiusmod esse aliqua sed incididunt aliqua incididunt mollit id et sit proident dolor nulla sed commodo.</h2>
+            
+                                  <p data-aos="fade-up" data-aos-delay="400">
+                                    <strong>Administrator</strong>
+            
+                                    <span class="mx-1">/</span>
+            
+                                    <small>Organization</small>
+                                  </p>
+                                </div>
+            
+                           </div>
+                      </div>
+                 </section>
+            
+            
+                <footer class="site-footer">
+                  <div class="foot-container">
+                      <div class="row">
+            
+                           <div class="col-lg-5 mx-lg-auto col-md-8 col-10">
+                           <h1 class="text-white" data-aos="fade-up" data-aos-delay="100">Chúng tôi cung cấp trải nghiệm <strong>thu âm giọng nói</strong>.</h1>
+                           </div>
+            
+                           <div class="col-lg-3 col-md-6 col-12" data-aos="fade-up" data-aos-delay="200">
+                           <h4 class="my-4">Thông tin liên hệ</h4>
+            
+                           <p class="mb-1">
+                           <i class="ti-phone mr-2 footer-icon"></i> 
+                           +123456789
+                           </p>
+            
+                           <p>
+                           <a href="#">
+                                <i class="ti-envelope mr-2 footer-icon"></i>
+                                admin@gmail.com
+                           </a>
+                           </p>
+                           <ul class="social-icon">
+                                <li><a href="#" class="ti-facebook"></a></li>
+                                <li><a href="#" class="ti-instagram"></a></li>
+                                <li><a href="#" class="ti-twitter"></a></li>
+                                <li><a href="#" class="ti-youtube"></a></li>
+                           </ul>
+                          
+                           </div>
+            
+                           <div class="col-lg-3 col-md-6 col-12" data-aos="fade-up" data-aos-delay="300">
+                           <h4 class="my-4">Địa chỉ</h4>
+            
+                           <p class="mb-1">
+                           <i class="ti-home mr-2 footer-icon"></i> 
+                           236 Hoàng Quốc Việt, Cổ Nhuế 1, Bắc Từ Liêm, Hà Nội
+                           </p>
+                           </div>
+            
+                      </div>
+                      <!-- <div class="row" >
+                           <div class="col-lg-12 col-md-12 col-12"  data-aos="fade-up" data-aos-delay="400">
+                                <p>Copyright &copy 2021 MTA</p>
+                           </div>
+                      </div> -->
+                    
+                  </div>
+                  
+                </footer>
+                <div class="col-lg-12 col-md-12 col-12" style="text-align: center; line-height:100%; color: #fff; background-color: #171819; padding-bottom: 15px">
+                 <p>Copyright &copy 2021 MTA</p>
+                </div>
+            
+                    <!-- SHOW UP LOGIN FORM -->
+                <form action="/login" method='POST' class="modal-form">
+                    <div class="modal-container">
+                            <!-- <div class="title-box-layout">
+                                <p>Let's go!</p>
+                            </div> -->
+                            <div class="modal-title">
+                                <h1>Welcome!</h1>
+                                <i class="ti-close"></i>
+                            </div>
+            
+                            <fieldset class="form-group modal-content">
+                                <div class="form-group input-info">
+                                    <label for="username" class="form-control-label">Tên đăng nhập<i>*</i> :</label>
+                                    <input type="text" name="username" id="username" class="form-control" required>
+                                </div>
                 
-        </div>
-    </form>
-</div>
-
-
-{% endblock %}
+                                <div class="form-group">
+                                    <label for="password" class="form-control-label">Mật khẩu<i>*</i> : </label>
+                                    <input type="password" name="password" id="password" class="form-control " required>
+                                </div>
+                
+                                <div class="form-group">
+                                    <input type="submit" class="submit-btn btn btn-info" value="Đăng nhập">
+                                </div>
+                
+                                <p>Bạn chưa có tài khoản? <i class="ti-hand-point-right"></i><a href="{{url_for('register')}}"> Đăng kí</a></p>
+                
+                            </fieldset>
+                            
+                    </div>
+                </form>
+                <a id="back-to-top" href="#" class="back-to-top animated-swing" role="button" title="Click to return on the top page" style="display: inline;">
+                    <i class="ti-angle-double-up"></i>
+                </a>
+                </div>
+            
+                
+            
+                 <!-- SCRIPTS -->
+                 <script src="../static/js/jquery.min.js"></script>
+                 <script src="../static/js/bootstrap.min.js"></script>
+                 <script src="../static/js/aos.js"></script>
+                 <script src="../static/js/owl.carousel.min.js"></script>
+                 <script src="../static/js/smoothscroll.js"></script>
+                 <script src="../static/js/custom.js"></script>
+                 <script src="../static/js/jquery-3.6.0.min.js"></script>
+                 <script>
+                     $(document).ready(function(){
+                        $("#login").click(function(){
+                            $(".modal-form").fadeIn();
+                        });
+                        $(".ti-close").click(function(){
+                            $(".modal-form").hide();
+                        });
+                        $(".modal-form").click(function(){
+                            $(".modal-form").hide();
+                        });
+                        $(".modal-container").click(function(event){
+                            event.stopPropagation();
+                        })
+                     })
+                 </script>
+            
+            </body>
+</html>
